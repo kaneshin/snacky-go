@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 
+	"github.com/kaneshin/snacky-go/app/config"
 	schm "github.com/kaneshin/snacky-go/app/entities/schemata"
 
 	"github.com/coopernurse/gorp"
@@ -27,7 +28,7 @@ func InitDB() *Driver {
 func initDB() (*gorp.DbMap, error) {
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
-	db, err := sql.Open("mysql", "root@tcp(localhost:3306)/dev_snacky")
+	db, err := sql.Open("mysql", config.GetDefault().Db.DSN())
 	if err != nil {
 		return nil, err
 	}
