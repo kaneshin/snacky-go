@@ -1,6 +1,11 @@
 package app
 
-import "github.com/revel/revel"
+import (
+	"github.com/kaneshin/snacky-go/app/utils/db"
+	"github.com/revel/revel"
+)
+
+var Dbd *db.Driver
 
 func init() {
 	// Filters is the default set of global filters.
@@ -21,7 +26,9 @@ func init() {
 
 	// register startup functions with OnAppStart
 	// ( order dependent )
-	// revel.OnAppStart(InitDB)
+	revel.OnAppStart(func() {
+		Dbd = db.InitDB()
+	})
 	// revel.OnAppStart(FillCache)
 }
 

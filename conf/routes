@@ -5,6 +5,9 @@
 module:testrunner
 
 GET     /                                       App.Index
+GET     /snacks                                 Snack.Get
+GET     /snacks/list/:type                           Snack.List
+GET     /snacks/:id                             Snack.GetById
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
