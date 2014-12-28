@@ -18,7 +18,7 @@ func NewSnackTag(snackId int32, tagId int32) *SnackTag {
 	st.InitBase()
 	st.SnackId = snackId
 	st.TagId = tagId
-	st.CreatedAt = time.Now().Unix()
-	st.UpdatedAt = time.Now().Unix()
+	st.CreatedAt = time.Now()
+	st.UpdatedAt = time.Now()
 	return &st
 }

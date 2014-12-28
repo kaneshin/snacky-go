@@ -38,11 +38,11 @@ func initDB() (*gorp.DbMap, error) {
 
 	// add a table, setting the table name to 'posts' and
 	// specifying that the Id property is an auto incrementing PK
-	dbm.AddTableWithName(schm.Snack{}, "snacks")
-	dbm.AddTableWithName(schm.Tag{}, "tags")
-	dbm.AddTableWithName(schm.Kind{}, "kinds")
-	dbm.AddTableWithName(schm.Maker{}, "makers")
-	dbm.AddTableWithName(schm.Area{}, "areas")
+	dbm.AddTableWithName(schm.Snack{}, "snacks").SetKeys(false, "Id")
+	dbm.AddTableWithName(schm.Tag{}, "tags").SetKeys(false, "Id")
+	dbm.AddTableWithName(schm.Kind{}, "kinds").SetKeys(false, "Id")
+	dbm.AddTableWithName(schm.Maker{}, "makers").SetKeys(false, "Id")
+	dbm.AddTableWithName(schm.Area{}, "areas").SetKeys(false, "Id")
 	dbm.AddTableWithName(schm.SnackTag{}, "snack_tag_relations").SetKeys(true, "Id")
 
 	// create the table. in a production system you'd generally
@@ -51,6 +51,8 @@ func initDB() (*gorp.DbMap, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// err = dbm.DropTables()
 
 	return dbm, nil
 }

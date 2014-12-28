@@ -18,8 +18,8 @@ func NewSnack(id int32, name string) *Snack {
 	snack.InitBase()
 	snack.Id = id
 	snack.Name = name
-	snack.CreatedAt = time.Now().Unix()
-	snack.UpdatedAt = time.Now().Unix()
+	snack.CreatedAt = time.Now()
+	snack.UpdatedAt = time.Now()
 	return &snack
 }
 

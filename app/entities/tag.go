@@ -18,7 +18,7 @@ func NewTag(id int32, name string) *Tag {
 	tag.InitBase()
 	tag.Id = id
 	tag.Name = name
-	tag.CreatedAt = time.Now().Unix()
-	tag.UpdatedAt = time.Now().Unix()
+	tag.CreatedAt = time.Now()
+	tag.UpdatedAt = time.Now()
 	return &tag
 }

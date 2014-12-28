@@ -3,7 +3,7 @@ package controllers
 import "github.com/revel/revel"
 
 type Snack struct {
-	*revel.Controller
+	Controller
 }
 
 func (c Snack) Get() revel.Result {

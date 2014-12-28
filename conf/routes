@@ -5,8 +5,11 @@
 module:testrunner
 
 GET     /                                       App.Index
+GET     /toriko/update/kind                     Toriko.UpdateKind
+GET     /toriko/update/area                     Toriko.UpdateArea
+GET     /toriko/update/maker                    Toriko.UpdateMaker
 GET     /snacks                                 Snack.Get
-GET     /snacks/list/:type                           Snack.List
+GET     /snacks/list/:type                      Snack.List
 GET     /snacks/:id                             Snack.GetById
 
 # Ignore favicon requests

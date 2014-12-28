@@ -18,7 +18,11 @@ func NewKind(id int32, name string) *Kind {
 	kind.InitBase()
 	kind.Id = id
 	kind.Name = name
-	kind.CreatedAt = time.Now().Unix()
-	kind.UpdatedAt = time.Now().Unix()
+	kind.CreatedAt = time.Now()
+	kind.UpdatedAt = time.Now()
 	return &kind
+}
+
+func (e *Kind) Scheme() *schm.Kind {
+	return &e.Kind
 }

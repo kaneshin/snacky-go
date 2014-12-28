@@ -18,7 +18,11 @@ func NewMaker(id int32, name string) *Maker {
 	maker.InitBase()
 	maker.Id = id
 	maker.Name = name
-	maker.CreatedAt = time.Now().Unix()
-	maker.UpdatedAt = time.Now().Unix()
+	maker.CreatedAt = time.Now()
+	maker.UpdatedAt = time.Now()
 	return &maker
+}
+
+func (e *Maker) Scheme() *schm.Maker {
+	return &e.Maker
 }
