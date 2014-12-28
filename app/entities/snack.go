@@ -23,6 +23,6 @@ func NewSnack(id int32, name string) *Snack {
 	return &snack
 }
 
-func (self *Snack) Scheme() *schm.Snack {
-	return &self.Snack
+func (e *Snack) Scheme() *schm.Snack {
+	return &e.Snack
 }

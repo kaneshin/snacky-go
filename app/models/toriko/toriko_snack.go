@@ -2,12 +2,16 @@ package toriko
 
 import (
 	"encoding/xml"
+	"errors"
+	"fmt"
+
+	"github.com/kaneshin/snacky-go/app"
 
 	"io/ioutil"
-	"log"
 	"net/http"
-	"net/url"
 	s "strconv"
+
+	e "github.com/kaneshin/snacky-go/app/entities"
 )
 
 type TorikoSnackItem struct {
@@ -32,21 +36,40 @@ type TorikoSnackTag struct {
 type TorikoSnackData struct {
 	XMLName xml.Name          `xml:"okashinotoriko"`
 	Items   []TorikoSnackItem `xml:"item"`
+	Count   int32             `xml:"count"`
 }
 
-func (m *Toriko) getURL() *url.URL {
-	u, err := url.Parse("http://www.sysbird.jp/toriko/api")
+func (m *Toriko) UpdateSnacksByKind(kind int, limit int, offset int) error {
+	items, err := m.GetSnacksByKind(kind, limit, offset)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	q := u.Query()
-	q.Set("apikey", "guest")
-	q.Set("format", "xml")
-	u.RawQuery = q.Encode()
-	return u
+	if len(*items) == 0 {
+		return errors.New("No items")
+	}
+	return m.insertSnacks(items)
 }
 
-func (m *Toriko) getSnack(key string, value int, limit int, offset int) (*[]TorikoSnackItem, error) {
+func (m *Toriko) UpdateSnacksByYear(year int, limit int, offset int) error {
+	items, err := m.GetSnacksByYear(year, limit, offset)
+	if err != nil {
+		return err
+	}
+	if len(*items) == 0 {
+		return errors.New("No items")
+	}
+	return m.insertSnacks(items)
+}
+
+func (m *Toriko) GetSnacksByKind(kind int, limit int, offset int) (*[]TorikoSnackItem, error) {
+	return m.getSnacks("type", kind, limit, offset)
+}
+
+func (m *Toriko) GetSnacksByYear(year int, limit int, offset int) (*[]TorikoSnackItem, error) {
+	return m.getSnacks("year", year, limit, offset)
+}
+
+func (m *Toriko) getSnacks(key string, value int, limit int, offset int) (*[]TorikoSnackItem, error) {
 	url := m.getURL()
 	q := url.Query()
 	q.Set(key, s.Itoa(value))
@@ -64,10 +87,12 @@ func (m *Toriko) getSnack(key string, value int, limit int, offset int) (*[]Tori
 	return &d.Items, err
 }
 
-func (m *Toriko) GetSnackByKind(kind int, limit int, offset int) (*[]TorikoSnackItem, error) {
-	return m.getSnack("type", kind, limit, offset)
-}
-
-func (m *Toriko) GetSnackByYear(year int, limit int, offset int) (*[]TorikoSnackItem, error) {
-	return m.getSnack("year", year, limit, offset)
+func (m *Toriko) insertSnacks(items *[]TorikoSnackItem) error {
+	for _, item := range *items {
+		d := *e.NewSnack(item.Id, item.Name)
+		if err := app.Dbd.Dbm.Insert(d.Scheme()); err != nil {
+			fmt.Println(err)
+		}
+	}
+	return nil
 }

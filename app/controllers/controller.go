@@ -10,7 +10,7 @@ func (c Controller) ResultJson(err error) map[string]interface{} {
 	res := map[string]interface{}{}
 	if err != nil {
 		res["status"] = "ng"
-		res["error"] = err
+		res["error"] = err.Error()
 	} else {
 		res["status"] = "ok"
 	}
